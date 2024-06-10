@@ -1,0 +1,130 @@
+services:
+  package-service:
+    build:
+      dockerfile: Dockerfile
+      context: ../../../package-service
+    image: africasuperapp-package-service:1.0
+    ports:
+      - 8001:8001
+    environment:
+      db_driver: ${DATABASE_DRIVER}
+      db_host: ${DATABASE_HOST}
+      db_port: ${DATABASE_PORT}
+      db_username: ${DATABASE_USERNAME}
+      db_password: ${DATABASE_PASSWORD}
+      db_name: ${PACKAGE_DATABASE_NAME}
+      db_connection_url:  ${PACKAGE_CONNECTION_URL}
+      kafka_brokers: ${KAFKA_BROKERS}
+      kafka_username: ${KAFKA_USERNAME}
+      kafka_password: ${KAFKA_PASSWORD}
+      kafka_group_id: ${KAFKA_GROUP_ID}
+      jwt_private_key: ${JWT_PRIVATE_KEY}
+      expiry_time: ${JWT_TOKEN_EXPIRY_TIME_INHOURS}
+      elastic_cloud_id: ${ELASTIC_CLOUD_ID}
+      elastic_username: ${ELASTIC_USERNAME}
+      elastic_password: ${ELASTIC_PASSWORD}
+      elastic_logs_index: ${ELASTIC_LOG_INDEX}
+      elastic_logging_level: ${LOG_LEVEL}
+      gateway_host: ${GATEWAY_HOST}
+      NODE_ENV: ${NODE_ENVIRONMENT}
+    networks:
+      - africa_superapp_network
+
+  delivery-service:
+    build:
+      dockerfile: Dockerfile
+      context: ../../../delivery-service
+    image: africasuperapp-delivery-service:1.0
+    ports:
+      - 8002:8002
+    environment:
+      db_driver: ${DATABASE_DRIVER}
+      db_host: ${DATABASE_HOST}
+      db_port: ${DATABASE_PORT}
+      db_username: ${DATABASE_USERNAME}
+      db_password: ${DATABASE_PASSWORD}
+      db_name: ${DELIVERY_DATABASE_NAME}
+      db_connection_url:  ${DELIVERY_CONNECTION_URL}
+      kafka_brokers: ${KAFKA_BROKERS}
+      kafka_username: ${KAFKA_USERNAME}
+      kafka_password: ${KAFKA_PASSWORD}
+      kafka_group_id: ${KAFKA_GROUP_ID}
+      gateway_host: ${GATEWAY_HOST}
+      jwt_private_key: ${JWT_PRIVATE_KEY}
+      expiry_time: ${JWT_TOKEN_EXPIRY_TIME_INHOURS}
+      elastic_cloud_id: ${ELASTIC_CLOUD_ID}
+      elastic_username: ${ELASTIC_USERNAME}
+      elastic_password: ${ELASTIC_PASSWORD}
+      elastic_logs_index: ${ELASTIC_LOG_INDEX}
+      elastic_logging_level: ${LOG_LEVEL}
+      NODE_ENV: ${NODE_ENVIRONMENT}
+    networks:
+      - africa_superapp_network
+
+  user-service:
+    build:
+      dockerfile: Dockerfile
+      context: ../../../user-service
+    image: africasuperapp-user-service:1.0
+    ports:
+      - 8003:8003
+    environment:
+      db_driver: ${DATABASE_DRIVER}
+      db_host: ${DATABASE_HOST}
+      db_port: ${DATABASE_PORT}
+      db_username: ${DATABASE_USERNAME}
+      db_password: ${DATABASE_PASSWORD}
+      db_name: ${USER_DATABASE_NAME}
+      db_connection_url:  ${USER_CONNECTION_URL}
+      kafka_brokers: ${KAFKA_BROKERS}
+      kafka_username: ${KAFKA_USERNAME}
+      kafka_password: ${KAFKA_PASSWORD}
+      kafka_group_id: ${KAFKA_GROUP_ID}
+      jwt_private_key: ${JWT_PRIVATE_KEY}
+      expiry_time: ${JWT_TOKEN_EXPIRY_TIME_INHOURS}
+      elastic_cloud_id: ${ELASTIC_CLOUD_ID}
+      elastic_username: ${ELASTIC_USERNAME}
+      elastic_password: ${ELASTIC_PASSWORD}
+      NODE_ENV: ${NODE_ENVIRONMENT}
+      elastic_logs_index: ${ELASTIC_LOG_INDEX}
+      elastic_logging_level: ${LOG_LEVEL}
+      bcrypt_salt: ${BCRYPT_SALT}
+      gateway_host: ${GATEWAY_HOST}
+    networks:
+      - africa_superapp_network
+
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ../../../web
+    image: africasuperapp-web:1.0
+    ports:
+      - 4200:4200
+    environment:
+      NODE_ENV: ${NODE_ENVIRONMENT}
+      GATEWAY_HOST: ${GATEWAY_HOST}
+      USER_API_HOST: ${USER_API_HOST}
+      PACKAGE_API_HOST: ${PACKAGE_API_HOST}
+      DELIVERY_API_HOST: ${DELIVERY_API_HOST}
+      WEB_SOCKET_HOST: ${WEB_SOCKET_HOST}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    networks:
+      - africa_superapp_network
+
+  apisix-gateway:
+    build:
+      dockerfile: Dockerfile
+      context: ../../../nginx-api-gateway
+    image: africasuperapp-apisix-gateway:1.0
+    ports:
+      - 8000:80
+    depends_on:
+      - package-service
+      - user-service
+      - delivery-service
+      - web
+    networks:
+      - africa_superapp_network
+
+networks:
+  africa_superapp_network:

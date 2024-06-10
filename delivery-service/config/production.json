@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "Delivery Service - superapp production",
+    "port": 8002
+  },
+  "jwt": {
+  },
+  "elasticSearch": {
+  },
+  "database": {
+
+  },
+  "kafka": {
+  }
+}

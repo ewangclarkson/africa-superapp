@@ -1,0 +1,36 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: superapp-route
+spec:
+  hostnames:
+    - localhost
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: web
+          port: 4200
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /package
+      backendRefs:
+        - name: package-service
+          port: 8001
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /delivery
+      backendRefs:
+        - name: delivery-service
+          port: 8002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /user
+      backendRefs:
+        - name: user-service
+          port: 8003

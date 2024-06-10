@@ -1,0 +1,446 @@
+<main class="main">
+  <app-header></app-header>
+  <section class="content">
+    <br/>
+
+
+    <div class="card" *ngIf="showAddPackage==false && showAddDelivery==false && showList ==true ">
+      <app-loader *ngIf="isLoading"></app-loader>
+          <div class="card-body">
+
+            <h3>{{"package_list" | translate}}</h3>
+            <button class="btn login__block__btn text-white"
+                    style="padding-top: 10px;padding-bottom: 10px;float: right;width: 220px" (click)="show(false,true,false);">{{"create_package" | translate}}</button>
+            <br/>
+            <div style="overflow-x: auto;width: 100%">
+              <table id="packageDatatable">
+                <thead>
+                <tr>
+                  <th><b>{{"sn" | translate | uppercase}}</b></th>
+                  <th><b>{{"package_id" | translate | uppercase}}</b></th>
+                  <th><b>{{"active_delivery_id" | translate | uppercase}}</b></th>
+                  <th><b>{{"description" | translate | uppercase}}</b></th>
+                  <th><b>{{"weight" | translate | uppercase}}</b></th>
+                  <th><b>{{"width" | translate | uppercase}}</b></th>
+                  <th><b>{{"height" | translate | uppercase}}</b></th>
+                  <th><b>{{"depth" | translate | uppercase}}</b></th>
+                  <th><b>{{"from_name" | translate | uppercase}}</b></th>
+                  <th><b>{{"from_address" | translate | uppercase}}</b></th>
+                  <th><b>{{"to_name" | translate | uppercase}}</b></th>
+                  <th><b>{{"to_address" | translate | uppercase}}</b></th>
+                </tr>
+                </thead>
+                <tbody *ngIf="!isLoading && packageList.length >0">
+                <tr *ngFor="let pkg of packageList; let j = index">
+                  <td>{{j + 1}}</td>
+                  <td>{{pkg.packageId}}</td>
+                  <td>{{pkg.activeDeliveryId}}</td>
+                  <td>{{pkg.description}}</td>
+                  <td>{{pkg.weight}}cm</td>
+                  <td>{{pkg.width}}cm</td>
+                  <td>{{pkg.height}}cm</td>
+                  <td>{{pkg.depth}}cm</td>
+                  <td>{{pkg.fromName}}</td>
+                  <td>{{pkg.fromAddress}}</td>
+                  <td>{{pkg.toName}}</td>
+                  <td>{{pkg.toAddress}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <br/><br/>
+            <h3>{{"delivery_list" | translate}}</h3>
+            <button class="btn login__block__btn text-white"
+                    style="width: 220px;padding-top: 10px;padding-bottom: 10px;float: right" (click)="show(false,false,true)">{{"create_delivery" | translate}}</button>
+            <br/>
+            <div style="overflow-x: auto;width: 100%">
+              <table id="deliveryDatatable">
+                <thead>
+                <tr>
+                  <th><b>{{"sn" | translate | uppercase}}</b></th>
+                  <th><b>{{"delivery_id" | translate | uppercase}}</b></th>
+                  <th><b>{{"package_id" | translate | uppercase}}</b></th>
+                  <th><b>{{"pickup_time" | translate | uppercase}}</b></th>
+                  <th><b>{{"start_time" | translate | uppercase}}</b></th>
+                  <th><b>{{"end_time" | translate | uppercase}}</b></th>
+                  <th><b>{{"status" | translate | uppercase}}</b></th>
+                </tr>
+                </thead>
+                <tbody *ngIf="!isLoading && deliveryList.length >0">
+                <tr *ngFor="let delivery of deliveryList; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td>{{delivery.deliveryId}}</td>
+                  <td>{{delivery.packageId}}</td>
+                  <td>{{delivery.pickupTime | date:'medium'}}</td>
+                  <td>{{delivery.startTime | date:'medium'}}</td>
+                  <td>{{delivery.endTime}}</td>
+                  <td>{{delivery.status}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="showAddPackage==true && showAddDelivery==false && showList ==false">
+
+          <div class="card-body">
+            <h3>{{"add_package" | translate}}</h3><br/>
+            <form
+              name="form"
+
+              class="search add-form"
+              (ngSubmit)="f.form.valid && onAddPackage()"
+              #f="ngForm"
+              novalidate>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"description" | translate}}</label>
+                    <input
+                      type="text"
+                      class="search__text"
+                      placeholder="Enter description"
+                      name="description"
+                      [(ngModel)]="packageRequest!.description"
+                      required
+                      #description="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && description.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(description.errors && f.submitted){
+                    <div class="required">Description is required!</div>
+                    }
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"depth" | translate}}</label>
+                    <input
+                      type="number"
+                      class="search__text"
+                      placeholder="Enter depth"
+                      name="depth"
+                      [(ngModel)]="packageRequest!.depth"
+                      required
+                      #depth="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && depth.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(depth.errors && f.submitted){
+                    <div class="required">Depth is required!</div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <br/>
+              <div class="form-group form-group--left">
+                <label>{{"weight" | translate}}</label>
+                <input
+                  type="number"
+                  class="search__text"
+                  placeholder="Enter weight"
+                  name="weight"
+                  [(ngModel)]="packageRequest!.weight"
+                  required
+                  #weight="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && weight.errors }"
+                />
+                <i class="form-group__bar"></i>
+                @if(weight.errors && f.submitted){
+                <div class="required">Weight is required</div>
+                }
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"width" | translate}}</label>
+                    <input
+                      type="number"
+                      class="search__text"
+                      placeholder="Enter width"
+                      name="width"
+                      [(ngModel)]="packageRequest!.width"
+                      required
+                      #width="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && width.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(width.errors && f.submitted){
+                    <div class="required">Width is required!</div>
+                    }
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"height" | translate}}</label>
+                    <input
+                      type="number"
+                      class="search__text"
+                      placeholder="Enter height"
+                      name="height"
+                      [(ngModel)]="packageRequest!.height"
+                      required
+                      #height="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && height.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(height.errors && f.submitted){
+                    <div class="required">Height is required!</div>
+                    }
+                  </div>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"from_name" | translate}}</label>
+                    <input
+                      type="text"
+                      class="search__text"
+                      placeholder="Enter source name"
+                      name="width"
+                      [(ngModel)]="packageRequest!.fromName"
+                      required
+                      #fromName="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && fromName.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(fromName.errors && f.submitted){
+                    <div class="required">From name is required!</div>
+                    }
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"from_address" | translate}}</label>
+                    <input
+                      type="text"
+                      class="search__text"
+                      placeholder="Enter source address"
+                      name="from_address"
+                      [(ngModel)]="packageRequest!.fromAddress"
+                      required
+                      #fromAddress="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && fromAddress.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(fromAddress.errors && f.submitted){
+                    <div class="required">Height is required!</div>
+                    }
+                  </div>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"to_name" | translate}}</label>
+                    <input
+                      type="text"
+                      class="search__text"
+                      placeholder="Enter receiver name"
+                      name="to_name"
+                      [(ngModel)]="packageRequest!.toName"
+                      required
+                      #toName="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && toName.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(toName.errors && f.submitted){
+                    <div class="required">Receiver name is required!</div>
+                    }
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"to_address" | translate}}</label>
+                    <input
+                      type="text"
+                      class="search__text"
+                      placeholder="Enter destination"
+                      name="height"
+                      [(ngModel)]="packageRequest!.toAddress"
+                      required
+                      #toAddress="ngModel"
+                      [ngClass]="{ 'is-invalid': f.submitted && toAddress.errors }"
+                    />
+                    <i class="form-group__bar"></i>
+                    @if(toAddress.errors && f.submitted){
+                    <div class="required">Receiver address is required!</div>
+                    }
+                  </div>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"from_location" | translate}}</label>
+                    <app-place-autocomplete [placeholder]="'enter_from' | translate"
+                                            (placeChanged)="fromLocation = $event"></app-place-autocomplete>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group form-group--left">
+                    <label>{{"to_location" | translate}}</label>
+                    <app-place-autocomplete [placeholder]="'enter_to' | translate"
+                                            (placeChanged)="toLocation =$event"></app-place-autocomplete>
+                  </div>
+                </div>
+              </div><br/>
+              <app-loader *ngIf="isLoading"></app-loader>
+              <div class="row">
+                <div class="col-sm-6">
+                  <button type="submit" class="btn login__block__btn">{{"create_package" | translate}}</button><br/><br/><br/>
+                </div>
+                <div class="col-sm-6">
+                  <p class="btn login__block__btn" style="color: white;background-color: red" (click)="show(true,false,false)">{{"cancel" | translate}}</p>
+                </div>
+              </div>
+              <br/><br/><br/>
+
+            </form>
+
+          </div>
+        </div>
+
+    <div class="card" *ngIf="showAddPackage==false && showAddDelivery==true && showList ==false" >
+      <div class="card-body">
+        <h3>{{"add_delivery" | translate}}</h3><br/>
+        <form
+          name="form"
+
+          class="search add-form"
+          (ngSubmit)="f.form.valid && onAddDelivery()"
+          #f="ngForm"
+          novalidate>
+          <div class="form-group form-group--left">
+            <label>{{"package" | translate}}</label>
+            <input
+              type="text"
+              class="search__text"
+              name="package"
+              placeholder="search package"
+              [(ngModel)]="deliveryRequest!.packageId"
+              required
+              list="package"
+              #packageSearch="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && packageSearch.errors }"
+            />
+            <i class="form-group__bar"></i>
+            @if(packageSearch.errors && f.submitted){
+            <div class="required">Package  is required</div>
+            }
+            <datalist id="package" style="width: 100%">
+              <option *ngFor="let pk of packageList" [value]="pk!.packageId"
+                      style="width: 100%">{{pk!.description}} </option>
+            </datalist>
+
+          </div>
+          <br/>
+          <div class="form-group form-group--left">
+            <label>{{"pickup_time" | translate}}</label>
+            <input
+              type="datetime-local"
+              class="search__text"
+              name="pickup_time"
+              [(ngModel)]="deliveryRequest!.pickupTime"
+              required
+              #pickupTime="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && pickupTime.errors }"
+            />
+            <i class="form-group__bar"></i>
+            @if(pickupTime.errors && f.submitted){
+            <div class="required">Pickup time is required</div>
+            }
+          </div>
+          <br/>
+          <div class="form-group form-group--left">
+            <label>{{"start_time" | translate}}</label>
+            <input
+              type="datetime-local"
+              class="search__text"
+              name="start_time"
+              [(ngModel)]="deliveryRequest!.startTime"
+              required
+              #startTime="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && startTime.errors }"
+            />
+            <i class="form-group__bar"></i>
+            @if(startTime.errors && f.submitted){
+            <div class="required">Start time is required</div>
+            }
+          </div>
+          <br/>
+          <div class="form-group form-group--left">
+            <label>{{"end_time" | translate}}</label>
+            <input
+              type="datetime-local"
+              class="search__text"
+              name="pickup_time"
+              [(ngModel)]="deliveryRequest!.endTime"
+              required
+              #endTime="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && endTime.errors }"
+            />
+            <i class="form-group__bar"></i>
+            @if(endTime.errors && f.submitted){
+            <div class="required">Pickup time is required</div>
+            }
+          </div>
+          <br/>
+          <div class="form-group form-group--left">
+            <label>{{"delivery_location" | translate}}</label>
+            <app-place-autocomplete [placeholder]="'enter_location' | translate"
+                                    (placeChanged)="deliveryLocation = $event"></app-place-autocomplete>
+          </div>
+          <br/>
+          <div class="form-group form-group--left">
+            <label>{{"status" | translate}}</label>
+            <input
+              type="text"
+              class="search__text"
+              name="status"
+              placeholder="Search status"
+              [(ngModel)]="deliveryRequest!.status"
+              required
+              list="status"
+              #status="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && status.errors }"
+            />
+            <i class="form-group__bar"></i>
+            @if(status.errors && f.submitted){
+            <div class="required">Status is required</div>
+            }
+            <datalist id="status" style="width: 100%">
+              <option *ngFor="let stOption of statusOptions" [value]="stOption"
+                      style="width: 100%">{{stOption}}
+              </option>
+            </datalist>
+          </div>
+          <br/>
+          <app-loader *ngIf="isLoading"></app-loader>
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="submit" class="btn login__block__btn">{{"create_delivery" | translate}}</button>
+            </div>
+            <div class="col-sm-6">
+              <p class="btn login__block__btn" style="color: white;background-color: red" (click)="show(true,false,false)">{{"cancel" | translate}}</p>
+            </div>
+          </div>
+          <br/><br/><br/>
+
+        </form>
+
+      </div>
+    </div>
+  </section>
+</main>

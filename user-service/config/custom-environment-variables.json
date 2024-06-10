@@ -1,0 +1,32 @@
+{
+  "database": {
+    "driver": "db_driver",
+    "host": "db_host",
+    "port": "db_port",
+    "username": "db_username",
+    "name": "db_name",
+    "password": "db_password",
+    "connectionUrl": "db_connection_url"
+  },
+  "jwt": {
+    "privateKey": "jwt_private_key",
+    "expiresIn": "expiry_time"
+  },
+  "elasticSearch": {
+    "cloudId": "elastic_cloud_id",
+    "username": "elastic_username",
+    "password": "elastic_password",
+    "logsIndex": "elastic_logs_index",
+    "loggingLevel": "elastic_logging_level"
+  },
+  "bcrypt": {
+    "salt": "bcrypt_salt"
+  },
+  "kafka": {
+    "brokers": "kafka_brokers",
+    "username": "kafka_username",
+    "password": "kafka_password",
+    "groupId": "kafka_group_id"
+  },
+  "allowedOrigin": "gateway_host"
+}

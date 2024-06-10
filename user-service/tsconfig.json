@@ -1,0 +1,26 @@
+{
+   "compilerOptions": {
+      "lib": [
+         "es5",
+         "es6"
+      ],
+      "types": ["reflect-metadata"],
+      "target": "es6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "rootDir": ".",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "sourceMap": true
+   },
+   "include": [
+      "./**/*.ts",
+      "node_modules/@types/node/globals.d.ts",
+      "node_modules/@types/node/globals.d.ts"
+   ],
+   "exclude": ["node_modules"]
+}

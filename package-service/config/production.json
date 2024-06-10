@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "Package Service - superapp production",
+    "port": 8001
+  },
+  "jwt": {
+  },
+  "elasticSearch": {
+  },
+  "database": {
+
+  },
+  "kafka": {
+  }
+}

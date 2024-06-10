@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery-service-deployment
+  labels:
+    app: delivery-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: delivery-service
+      labels:
+        app: delivery-service
+    spec:
+      containers:
+        - name: delivery-service
+          image: 590183838260.dkr.ecr.us-east-1.amazonaws.com/africasuperapp-delivery-service:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8002
+          env:
+            - name: jwt_private_key
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: jwtPrivateKey
+            - name: db_driver
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: databaseDriver
+            - name: db_host
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: databaseHost
+            - name: db_port
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: databasePort
+            - name: db_username
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: databaseUsername
+            - name: db_password
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key:  databasePassword
+            - name: db_name
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: deliveryServiceDatabaseName
+            - name: db_connectionUrl
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key:  packageDatabaseConnectionUrl
+            - name: kafka_brokers
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: kafkaBrokers
+            - name: kafka_username
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: kafkaUsername
+            - name: kafka_password
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: kafkaPassword
+            - name: kafka_group_id
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: kafkaGroupId
+            - name: gateway_host
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: gateWayHost
+            - name: expiry_time
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: jwtTokenExpiryTimeInHours
+            - name:  elastic_cloud_id
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: elasticCloudId
+            - name: elasticUsername
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: elasticUsername
+            - name: elastic_password
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: elasticPassword
+            - name: elastic_logs_index
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config-map
+                  key: elasticLogsIndex
+            - name: elastic_logging_level
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config-map
+                  key: logLevel
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config-map
+                  key: nodeEnv
+      imagePullSecrets:
+        - name: registry-credentials
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: delivery-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery-service
+spec:
+  selector:
+    app: delivery-service
+  ports:
+    - protocol: "TCP"
+      port: 8002
+      targetPort: http
+  type: ClusterIP

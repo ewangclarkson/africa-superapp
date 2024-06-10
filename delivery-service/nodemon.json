@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["*.test.js", "**/fixtures/**"],
+  "watch": [ "." ],
+  "ext": "ts",
+  "exec": "ts-node app.ts"
+}

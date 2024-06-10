@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config-map
+data:
+  nodeEnv: dev
+  gateWayApiHost: apisix-gateway
+  userApiHost: apisix-gateway/user
+  deliveryApiHost: apisix-gateway/delivery
+  packageApiHost: apisix-gateway/package
+  webSocketHost: apisix-gateway
+

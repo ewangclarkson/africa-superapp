@@ -1,0 +1,10 @@
+<form class="search search--focus" >
+  <input
+    type="text"
+    name="search"
+    class="search__text"
+    placeholder="{{searchPlaceHolder}}"
+    [(ngModel)]="searchValue"
+    (change)="onSearchValueChange()"
+  >
+</form>

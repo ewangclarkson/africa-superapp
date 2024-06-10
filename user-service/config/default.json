@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "User Service - superapp default",
+    "port": 8003
+  },
+  "jwt": {
+  },
+  "elasticSearch": {
+  },
+  "database": {
+
+  },
+  "kafka": {
+  }
+}

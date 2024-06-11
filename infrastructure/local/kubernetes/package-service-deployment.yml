@@ -140,5 +140,4 @@ spec:
     - protocol: "TCP"
       port: 8001
       targetPort: http
-      nodePort: 30008
-  type: LoadBalancer
+  type: ClusterIP

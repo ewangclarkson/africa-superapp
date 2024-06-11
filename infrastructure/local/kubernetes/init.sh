@@ -62,5 +62,4 @@ export gateway_host=http:localhost
 export elastic_logs_index=asuperapp_logs
 export elastic_logging_level=info
 
-kubectl create secret docker-registry regcredentialsaws --docker-server=590183838260.dkr.ecr.us-east-1.amazonaws.com --docker-username=AWS --docker-password=$(aws ecr get-login-password --region us-east-1)
-
+kubectl create secret docker-registry registry-credentials --docker-server=590183838260.dkr.ecr.us-east-1.amazonaws.com --docker-username=AWS --docker-password=$(aws ecr get-login-password --region us-east-1)

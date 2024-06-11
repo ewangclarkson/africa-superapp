@@ -23,36 +23,6 @@ spec:
                 configMapKeyRef:
                   name: web-config-map
                   key: nodeEnv
-            - name: GATEWAY_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: web-config-map
-                  key: gateWayHot
-            - name: USER_API_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: web-config-map
-                  key: userApiHost
-            - name: PACKAGE_API_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: web-config-map
-                  key: packageApiHost
-            - name: DELIVERY_API_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: web-config-map
-                  key: deliveryApiHost
-            - name: WEB_SOCKET_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: web-config-map
-                  key: webSocketHost
-            - name: GOOGLE_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: googleApiHost
           imagePullPolicy: IfNotPresent
       imagePullSecrets:
         - name: registry-credentials

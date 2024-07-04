@@ -2,6 +2,7 @@ export default class AppConfigurationProperties {
     readonly privateKey: string;
     readonly tokenExpiryTimeInHours: string;
     readonly elasticCloudId: string;
+    readonly elasticNodeUrl: string;
     readonly elasticUsername: string;
     readonly elasticPassword: string;
     readonly elasticLogsIndex: string;

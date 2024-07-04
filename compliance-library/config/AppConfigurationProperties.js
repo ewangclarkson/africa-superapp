@@ -18,6 +18,7 @@ let AppConfigurationProperties = class AppConfigurationProperties {
         this.privateKey = config_1.default.has('jwt.privateKey') ? config_1.default.get('jwt.privateKey') : '';
         this.tokenExpiryTimeInHours = config_1.default.has('jwt.expiresIn') ? config_1.default.get('jwt.expiresIn') : '2h';
         this.elasticCloudId = config_1.default.has("elasticSearch.cloudId") ? config_1.default.get("elasticSearch.cloudId") : '';
+        this.elasticNodeUrl = config_1.default.has("elasticSearch.nodeUrl") ? config_1.default.get("elasticSearch.nodeUrl") : '';
         this.elasticUsername = config_1.default.has("elasticSearch.username") ? config_1.default.get("elasticSearch.username") : '';
         this.elasticPassword = config_1.default.has("elasticSearch.password") ? config_1.default.get("elasticSearch.password") : '';
         this.elasticLogsIndex = config_1.default.has("elasticSearch.logsIndex") ? config_1.default.get("elasticSearch.logsIndex") : 'app_logs';

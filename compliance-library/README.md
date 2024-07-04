@@ -105,6 +105,7 @@ npm i compliance-library
        "password": "elastic_password",
        "logsIndex": "elastic_logs_index",
        "loggingLevel": "elastic_logging_level"
+       "nodeUrl":  "elastic_node_url",
      },
    //Configurationgs for kafka
      "kafka": { 
@@ -142,6 +143,7 @@ npm i compliance-library
    export elastic_username=
    export elastic_password=
    export elastic_logs_index=
+   export elastic_node_url=
    export elastic_logging_level=info
    ```
 Refer to the typeorm documentation for the supported db_driver.(mysql,postgresql,mongodb)
@@ -149,7 +151,8 @@ Refer to the typeorm documentation for the supported db_driver.(mysql,postgresql
  Note:
    - Provide the kafka_brokers environment variables as a comma separated list if many
    - To define a different logging level visit the winston-elasticsearch package docs for compliant options
-   - You may omit environment variables that do not apply for your specific use
+   - If you want to use the cloudId instead of the node url, provide the cloudId and omit the node url in elastic search and vice versa
+   - You may omit environment variables that do not apply for your specific use.
    - Remember to enter the values for the environment variables in the opposite side of the equal to sign.The configurations setting approach above is for typical Linux/Mac environment, refer to the internet on how to set configuration variables for windows environment
 
 ### Database and binding initialization
@@ -259,7 +262,7 @@ Refer to the typeorm documentation for the supported db_driver.(mysql,postgresql
                 port: appConfigurations.databasePort,
                 username: appConfigurations.databaseUsername,
                 password: appConfigurations.databasePassword,
-                database: appConfigurations.databasName,
+                database: appConfigurations.databaseName,
                 synchronize: true,
                 logging: false,
                 entities: [User],
@@ -423,7 +426,7 @@ Import the inversify.ioc.config.ts and database.ts files in the app.ts or index.
     router.post("/register",[apiSecurity.authCompliance.bind(apiSecurity)], controller.registerUser.bind(controller));
     router.put("/:id",[apiSecurity.uuidStandardCompliance.bind(apiSecurity),apiSecurity.authCompliance.bind(apiSecurity),apiSecurity.adminCompliance.bind(apiSecurity)], controller.updateUser.bind(controller));
     router.get("/me",apiSecurity.adminCompliance.bind(apiSecurity),apiSecurity.driverCompliance.bind(apiSecurity), controller.getAuthenticatedUser.bind(controller));
-    router.post("/login",apiSecurity.roleCompliance.bind(apiSecurity,["ADMIN","DRIVER","SUPERADMIN"]) controller.login.bind(controller));
+    router.post("/login",apiSecurity.roleCompliance.bind(apiSecurity,["ADMIN","DRIVER","SUPERADMIN"]); controller.login.bind(controller);)
     
     export default router;
 
@@ -462,7 +465,7 @@ Import the inversify.ioc.config.ts and database.ts files in the app.ts or index.
             this.userRepository = userRepository;
         }
     
-        request(payload: KafkaPayload): Promise<KafkaResponse> {
+        async request(payload: KafkaPayload): Promise<KafkaResponse> {
              //deinfe the request operation depending on the incoming request as shown the next method
             return Promise.resolve({payload: "", correlationId: payload.correlationId});
         }

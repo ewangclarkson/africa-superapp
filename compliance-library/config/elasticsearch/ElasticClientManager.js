@@ -9,8 +9,15 @@ const AppConfigurationProperties_1 = __importDefault(require("../AppConfiguratio
 class ElasticSearchClientManager {
     constructor(appConfigurations) {
         this.appConfigurations = appConfigurations;
-        this.elasticClient = new client_1.default({
-            cloud: { id: this.appConfigurations.elasticCloudId },
+        appConfigurations.elasticCloudId ?
+            this.elasticClient = new client_1.default({
+                cloud: { id: this.appConfigurations.elasticCloudId },
+                auth: {
+                    username: this.appConfigurations.elasticUsername,
+                    password: this.appConfigurations.elasticPassword
+                }
+            }) : this.elasticClient = new client_1.default({
+            node: appConfigurations.elasticNodeUrl,
             auth: {
                 username: this.appConfigurations.elasticUsername,
                 password: this.appConfigurations.elasticPassword

@@ -40,8 +40,8 @@ let SecurityComplianceImpl = class SecurityComplianceImpl {
     authCompliance(request, response, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const tokenString = request.header("Authorization") + '';
-                if (tokenString.length === 0)
+                const tokenString = request.header("Authorization");
+                if (!tokenString)
                     return response.status(http_status_1.default.FORBIDDEN).send("Access denied");
                 const token = tokenString.replace("Bearer ", "");
                 const user = yield (0, jsonwebtoken_1.verify)(token, this.appConfiguration.privateKey);

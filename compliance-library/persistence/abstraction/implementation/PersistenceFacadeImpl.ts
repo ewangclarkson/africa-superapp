@@ -4,6 +4,7 @@ import PersistenceFacade from "../PersistenceFacade";
 
 //use facade design
 export default class PersistenceFacadeImpl implements PersistenceFacade {
+
     private readonly persistenceManager: PersistenceManager;
 
     constructor(persistenceManager: PersistenceManager) {

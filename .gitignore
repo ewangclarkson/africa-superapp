@@ -8,6 +8,9 @@ HELP.md
 .springBeans
 .sts4-cache
 
+### Docker ###
+infrastructure/local/docker/.env
+
 ### IntelliJ IDEA ###
 
 ### NetBeans ###
